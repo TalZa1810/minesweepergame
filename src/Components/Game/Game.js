@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Board from '../Board/Board';
 import style from './Game.scss';
-import Header from "../Header/Header";
+import Header from '../Header/Header';
 
 class Game extends Component {
 
@@ -10,7 +10,7 @@ class Game extends Component {
         this.state = {
             height: 5,
             width: 4,
-            minesNum: 3,
+            minesNum: 1,
             gameActive: true
         };
         this.updateGameStatus = this.updateGameStatus.bind(this);
@@ -26,7 +26,8 @@ class Game extends Component {
         return (
             <div style={style.game} className="game">
             <Header gameActive={this.state.gameActive}/>
-        <Board changeGameStatus={this.updateGameStatus} height={height} width={width} minesNum={minesNum} />
+            {this.state.gameActive &&
+            <Board changeGameStatus={this.updateGameStatus} height={height} width={width} minesNum={minesNum} />}
         </div>
     );
     }

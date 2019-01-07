@@ -26,7 +26,7 @@ class Board extends React.Component {
         for(let rowInd= 0; rowInd < height; rowInd++){
             let row = [];
             for ( let colInd= 0; colInd < width; colInd++){
-                row.push({isRevealed:false ,value: 0});
+                row.push({isRevealed:false ,value: 0, isFlag: false});
             }
             board.push(row);
         }
@@ -116,10 +116,57 @@ class Board extends React.Component {
     }
 
     onCellClick(rowInd, colInd, board){
-        const cell = board[rowInd][colInd];
-        cell.isRevealed = true;
+        this.revealCell(rowInd, colInd, board);
         this.setState({board});
     }
+
+    revealNextCell(rowInd, colInd, board) {
+
+        if(rowInd === -1 || colInd === -1 || rowInd === board.length || colInd === board[0].length){
+            return;
+        }
+
+        const cell = board[rowInd][colInd];
+
+        if (cell.isRevealed){
+            return;
+        }
+
+        if (cell.value !== mineSign) {
+            return;
+        }
+
+        debugger;
+
+        //a cell with zero mines surrounding
+        this.revealCell(rowInd, colInd, board);
+    }
+
+    revealCell(rowInd, colInd, board){
+        const cell = board[rowInd][colInd];
+
+        if (cell.isRevealed) {
+            return;
+        }
+
+        cell.isRevealed = true;
+        if (cell.value === mineSign) {
+            this.props.changeGameStatus();
+            return;
+        }
+
+        if(!cell.value){
+            this.revealNextCell(rowInd - 1, colInd - 1, board);
+            this.revealNextCell(rowInd - 1, colInd, board);
+            this.revealNextCell(rowInd - 1, colInd + 1, board);
+            this.revealNextCell(rowInd + 1, colInd, board);
+            this.revealNextCell(rowInd, colInd - 1, board);
+            this.revealNextCell(rowInd, colInd + 1, board);
+            this.revealNextCell(rowInd + 1, colInd - 1, board);
+            this.revealNextCell(rowInd + 1, colInd + 1, board);
+        }
+    }
+
 
     render(){
         const board = this.state.board;

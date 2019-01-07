@@ -1,5 +1,5 @@
 import React from 'react';
-import style from './Cell.scss';
+import './Cell.scss';
 
 class Cell extends React.Component {
 
@@ -8,11 +8,10 @@ class Cell extends React.Component {
         let cellBtn;
 
         if(cell.isRevealed){
-            cellBtn = <button style={style.cellRevealed}> {cell.value} </button>;
+            cellBtn = <button className="cellRevealed" > {cell.value} </button>;
         }
         else{
-            cellBtn = <button onClick={()=>{onCellClick(row,col, board)}}
-                              style={style.cellNotRevealed} />;
+            cellBtn = <button className="cellNotRevealed" onClick={()=>{onCellClick(row,col, board)}}/>;
         }
 
         return cellBtn;

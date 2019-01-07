@@ -4,8 +4,9 @@ class Header extends Component {
 
     render() {
         const gameActive = this.props.gameActive;
-        const Header = gameActive && "Game On";
-        return <div>{Header}</div>;
+        let HeaderMsg;
+        gameActive? HeaderMsg = "Game On" :  HeaderMsg = "Game Over";
+        return <div>{HeaderMsg}</div>;
     }
 }
 
