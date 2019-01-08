@@ -18,7 +18,7 @@ class Header extends Component {
                 headerMsg = "You Lose";
                 break;
             case gameStatus.win:
-                headerMsg = "Game On";
+                headerMsg = "Game Win";
                 break;
             default:
                 headerMsg = "Game On";

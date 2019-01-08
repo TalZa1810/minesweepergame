@@ -8,9 +8,27 @@ class Board extends React.Component {
 
     constructor(props){
         super(props);
-        const boardInfo = this.createBoard();
-        this.state =  boardInfo  ;
+        this.revealedCounter = 0;
+         this.state = {
+            board: [],
+            minesIndArr: []
+        };
         this.onCellClick = this.onCellClick.bind(this);
+    }
+
+    componentDidUpdate(){
+        const rowNum= this.props.height;
+        const colNum = this.props.width;
+        const boardSize= rowNum * colNum;
+        const minesNum = this.props.minesNum;
+        const isWinner = boardSize - minesNum === this.revealedCounter;
+        if(isWinner){
+            this.props.changeGameStatus(gameStatus.win);
+        }
+    }
+
+    componentDidMount() {
+        this.createBoard();
     }
 
     getRandomMineIndex(max) {
@@ -34,7 +52,7 @@ class Board extends React.Component {
 
         this.placeMines(minesNum, minesIndArr, board);
         this.placeNumbers(board, minesIndArr);
-        return ({board, minesIndArr})
+        this.setState({board, minesIndArr});
     }
 
     placeMines(minesNum , minesIndArr, board){
@@ -135,6 +153,7 @@ class Board extends React.Component {
 
         if (cell.value) {
             cell.isRevealed = true;
+            this.revealedCounter++;
             return;
         }
 
@@ -150,6 +169,8 @@ class Board extends React.Component {
         }
 
         cell.isRevealed = true;
+        this.revealedCounter++;
+
         if (cell.value === mineSign) {
             this.props.changeGameStatus(gameStatus.lose);
             return;
@@ -169,6 +190,7 @@ class Board extends React.Component {
 
     render(){
         const board = this.state.board;
+
         return (<div style={style.board}>
             {
                 board.map((row, rowInd) =>{

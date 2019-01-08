@@ -11,7 +11,7 @@ class Game extends Component {
         this.state = {
             height: 5,
             width: 4,
-            minesNum: 11,
+            minesNum: 5,
             gameStatus: gameStatus.inProgress
         };
         this.updateGameStatus = this.updateGameStatus.bind(this);
