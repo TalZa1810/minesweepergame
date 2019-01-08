@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Board from '../Board/Board';
 import style from './Game.scss';
 import Header from '../Header/Header';
+import { gameStatus } from '../../Constants';
 
 class Game extends Component {
 
@@ -10,24 +11,25 @@ class Game extends Component {
         this.state = {
             height: 5,
             width: 4,
-            minesNum: 1,
-            gameActive: true
+            minesNum: 11,
+            gameStatus: gameStatus.inProgress
         };
         this.updateGameStatus = this.updateGameStatus.bind(this);
     }
 
-    updateGameStatus(){
-        const gameActive = false;
-        this.setState({gameActive});
+    updateGameStatus(status){
+        const gameStatus = status;
+        this.setState({gameStatus});
     }
 
     render() {
         const { height, width, minesNum } = this.state;
         return (
             <div style={style.game} className="game">
-            <Header gameActive={this.state.gameActive}/>
-            {this.state.gameActive &&
-            <Board changeGameStatus={this.updateGameStatus} height={height} width={width} minesNum={minesNum} />}
+            <Header gameStatus={this.state.gameStatus}/>
+            {this.state.gameStatus === gameStatus.inProgress ?
+            <Board changeGameStatus={this.updateGameStatus} height={height} width={width} minesNum={minesNum} /> : null
+            }
         </div>
     );
     }

@@ -2,13 +2,14 @@ import React from 'react';
 import style from './Board.scss';
 import Cell from "../Cell/Cell";
 import PropTypes from 'prop-types';
-import { mineSign } from '../../Constants';
+import { mineSign , gameStatus } from '../../Constants';
 
 class Board extends React.Component {
 
     constructor(props){
         super(props);
-        this.state =  this.createBoard();
+        const boardInfo = this.createBoard();
+        this.state =  boardInfo  ;
         this.onCellClick = this.onCellClick.bind(this);
     }
 
@@ -24,7 +25,7 @@ class Board extends React.Component {
         const board= [];
 
         for(let rowInd= 0; rowInd < height; rowInd++){
-            let row = [];
+            const row = [];
             for ( let colInd= 0; colInd < width; colInd++){
                 row.push({isRevealed:false ,value: 0, isFlag: false});
             }
@@ -132,11 +133,10 @@ class Board extends React.Component {
             return;
         }
 
-        if (cell.value !== mineSign) {
+        if (cell.value) {
+            cell.isRevealed = true;
             return;
         }
-
-        debugger;
 
         //a cell with zero mines surrounding
         this.revealCell(rowInd, colInd, board);
@@ -151,7 +151,7 @@ class Board extends React.Component {
 
         cell.isRevealed = true;
         if (cell.value === mineSign) {
-            this.props.changeGameStatus();
+            this.props.changeGameStatus(gameStatus.lose);
             return;
         }
 
@@ -166,7 +166,6 @@ class Board extends React.Component {
             this.revealNextCell(rowInd + 1, colInd + 1, board);
         }
     }
-
 
     render(){
         const board = this.state.board;
