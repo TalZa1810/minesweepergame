@@ -2,17 +2,16 @@ import React from 'react';
 import style from './Board.scss';
 import Cell from "../Cell/Cell";
 import PropTypes from 'prop-types';
-import { mineSign , gameStatus } from '../../Constants';
+import { mineSign, gameStatus } from '../../Constants';
 
 class Board extends React.Component {
 
     constructor(props){
         super(props);
         this.revealedCounter = 0;
-         this.state = {
-            board: [],
-            minesIndArr: []
-        };
+        this.minesIndArr= [];
+        this.flagsCounter = 0;
+        this.state = { board: [] };
         this.onCellClick = this.onCellClick.bind(this);
     }
 
@@ -39,7 +38,6 @@ class Board extends React.Component {
         const height = this.props.height;
         const width = this.props.width;
         const minesNum = this.props.minesNum;
-        const minesIndArr = [];
         const board= [];
 
         for(let rowInd= 0; rowInd < height; rowInd++){
@@ -50,20 +48,20 @@ class Board extends React.Component {
             board.push(row);
         }
 
-        this.placeMines(minesNum, minesIndArr, board);
-        this.placeNumbers(board, minesIndArr);
-        this.setState({board, minesIndArr});
+        this.placeMines(minesNum, board);
+        this.placeNumbers(board);
+        this.setState({board});
     }
 
-    placeMines(minesNum , minesIndArr, board){
+    placeMines(minesNum, board){
         const height = board.length;
         const width = board[0].length;
 
         for(let i = 0; i < minesNum; i++){
             const rowInd = this.getRandomMineIndex(height);
             const colInd = this.getRandomMineIndex(width);
-            if (!minesIndArr.includes({rowInd, colInd})){
-                minesIndArr.push({rowInd, colInd});
+            if (!this.minesIndArr.includes({rowInd, colInd})){
+                this.minesIndArr.push({rowInd, colInd});
                 board[rowInd][colInd].value = mineSign;
             }
             else{
@@ -72,8 +70,8 @@ class Board extends React.Component {
         }
     }
 
-    placeNumbers(board, minesIndArr){
-        minesIndArr.forEach(mine =>{
+    placeNumbers(board){
+        this.minesIndArr.forEach(mine =>{
             this.placeVerticalNumbers(mine.rowInd, mine.colInd, board);
             this.placeHorizontalNumbers(mine.rowInd, mine.colInd, board);
             this.placeRightSlantNumbers(mine.rowInd, mine.colInd, board);
@@ -134,8 +132,17 @@ class Board extends React.Component {
         }
     }
 
-    onCellClick(rowInd, colInd, board){
-        this.revealCell(rowInd, colInd, board);
+    onCellClick(e, rowInd, colInd){
+        const board = this.state.board;
+        if(e.type === 'contextmenu'){
+           e.preventDefault();
+           const cell = board[rowInd][colInd];
+           cell.isFlag = true;
+        }
+        else{
+            this.revealCell(rowInd, colInd, board);
+        }
+
         this.setState({board});
     }
 
@@ -188,9 +195,20 @@ class Board extends React.Component {
         }
     }
 
+    // addFlag(e,rowInd, colInd ) {
+    //     if (e.type === 'contextmenu') {
+    //         e.preventDefault();
+    //         const board = this.state.board;
+    //         const cell = board[rowInd][colInd];
+    //         cell.isFlag = true;
+    //         // e.target.innerText = flagSign;
+    //         // e.target.className = "cellRevealed";
+    //         // this.flagsCounter++;
+    //     }
+    // }
+
     render(){
         const board = this.state.board;
-
         return (<div style={style.board}>
             {
                 board.map((row, rowInd) =>{
@@ -201,7 +219,6 @@ class Board extends React.Component {
                                 cell={cell}
                                 row={rowInd}
                                 col={colInd}
-                                board={board}
                                 onCellClick={this.onCellClick}
                             />
                         })}
@@ -213,8 +230,7 @@ class Board extends React.Component {
 }
 
 Board.propTypes = {
-    board: PropTypes.array,
-    minesIndArr: PropTypes.array
+    board: PropTypes.array
 };
 
 export default Board;
