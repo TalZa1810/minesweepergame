@@ -11,6 +11,7 @@ class Board extends React.Component {
         this.revealedCounter = 0;
         this.minesIndArr= [];
         this.flagsCounter = 0;
+        this.shouldDisableCells = false;
         this.state = { board: [] };
         this.onCellClick = this.onCellClick.bind(this);
     }
@@ -20,9 +21,10 @@ class Board extends React.Component {
         const colNum = this.props.width;
         const boardSize= rowNum * colNum;
         const minesNum = this.props.minesNum;
-        const isWinner = boardSize - minesNum === this.revealedCounter;
+        const isWinner = boardSize - minesNum === this.revealedCounter && minesNum === this.flagsCounter;
         if(isWinner){
             this.props.changeGameStatus(gameStatus.win);
+            this.shouldDisableCells = true;
         }
     }
 
@@ -180,6 +182,7 @@ class Board extends React.Component {
 
         if (cell.value === mineSign) {
             this.props.changeGameStatus(gameStatus.lose);
+            this.shouldDisableCells = true;
             return;
         }
 
@@ -195,18 +198,6 @@ class Board extends React.Component {
         }
     }
 
-    // addFlag(e,rowInd, colInd ) {
-    //     if (e.type === 'contextmenu') {
-    //         e.preventDefault();
-    //         const board = this.state.board;
-    //         const cell = board[rowInd][colInd];
-    //         cell.isFlag = true;
-    //         // e.target.innerText = flagSign;
-    //         // e.target.className = "cellRevealed";
-    //         // this.flagsCounter++;
-    //     }
-    // }
-
     render(){
         const board = this.state.board;
         return (<div style={style.board}>
@@ -220,6 +211,7 @@ class Board extends React.Component {
                                 row={rowInd}
                                 col={colInd}
                                 onCellClick={this.onCellClick}
+                                shouldDisableCells={this.shouldDisableCells}
                             />
                         })}
                     </div>

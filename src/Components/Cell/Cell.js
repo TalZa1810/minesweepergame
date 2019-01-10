@@ -5,21 +5,28 @@ import { flagSign } from '../../Constants';
 
 class Cell extends React.Component {
 
+
     render(){
-        const { cell, row, col , onCellClick} = this.props;
+        const { cell, row, col , onCellClick, shouldDisableCells } = this.props;
         let cellBtn;
 
         if(cell.isRevealed && !cell.isFlag){
-            cellBtn = <button className="cellRevealed" > {cell.value} </button>;
+            cellBtn = <button className="cellRevealed"
+                              disabled={shouldDisableCells}>
+                        {cell.value}
+                        </button>;
         }
         else{
             if(cell.isFlag){
-                cellBtn = <button className="cellFlaged" > {flagSign} </button>;
+                cellBtn = <button className="cellFlaged"
+                                  disabled={shouldDisableCells}
+                > {flagSign} </button>;
             }
             else{
                 cellBtn = <button className="cellNotRevealed"
-                                  onContextMenu={e =>onCellClick(e,row, col )}
-                                  onClick={e =>{onCellClick(e, row,col)}}
+                                  disabled={shouldDisableCells}
+                    onContextMenu={e =>onCellClick(e,row, col )}
+                    onClick={e =>{onCellClick(e, row,col)}}
                 />;
             }
         }
