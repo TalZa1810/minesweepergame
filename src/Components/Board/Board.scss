@@ -1,8 +1,22 @@
 .board{
-  width: 500px;
-  height: 500px;
+
 }
 
-.row{
+#board > div  {
   display: flex;
+}
+
+
+// .row{
+//   display: flex;
+// }
+
+#board{
+  //position:fixed;
+  //top: 20%;
+  //left: 50%;
+  //margin-top: -9em; /*set to a negative number 1/2 of your height*/
+  //margin-left: -15em; /*set to a negative number 1/2 of your width*/
+  //border: 1px solid #ccc;
+  //background-color: #f3f3f3;
 }

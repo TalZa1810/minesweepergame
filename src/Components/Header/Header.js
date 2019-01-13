@@ -1,32 +1,9 @@
-import React, { Component } from 'react';
-import {gameStatus} from "../../Constants";
+import React from 'react';
 
-class Header extends Component {
 
-    render() {
-        return <div>{this.displayGameStatus()}</div>;
-    }
-
-    displayGameStatus(){
-        let headerMsg;
-
-        switch (this.props.gameStatus) {
-            case gameStatus.inProgress:
-                headerMsg = "Game On";
-                break;
-            case gameStatus.lose:
-                headerMsg = "You Lose";
-                break;
-            case gameStatus.win:
-                headerMsg = "Game Win";
-                break;
-            default:
-                headerMsg = "Game On";
-        }
-
-        return headerMsg;
-    }
-
-}
+//TODO: pure component and logic
+export const Header = props => {
+    return <div></div>
+};
 
 export default Header;

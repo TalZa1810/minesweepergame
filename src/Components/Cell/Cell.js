@@ -1,38 +1,31 @@
 import React from 'react';
 import './Cell.scss';
-import { flagSign } from '../../Constants';
+import { flagSign } from '../../Utils/Constants';
 
 
-class Cell extends React.Component {
+export const Cell = props =>{
 
+    const { cell, row, col , onCellClick } = props;
+    let cellBtn;
 
-    render(){
-        const { cell, row, col , onCellClick, shouldDisableCells } = this.props;
-        let cellBtn;
+    if(cell.isRevealed && !cell.isFlag){
+        cellBtn = <button className="cellRevealed">
+            {cell.value}
+        </button>;
+    }
+    else{
+        if(cell.isFlag){
+            cellBtn = <button className="cellFlaged"
 
-        if(cell.isRevealed && !cell.isFlag){
-            cellBtn = <button className="cellRevealed"
-                              disabled={shouldDisableCells}>
-                        {cell.value}
-                        </button>;
+            > {flagSign} </button>;
         }
         else{
-            if(cell.isFlag){
-                cellBtn = <button className="cellFlaged"
-                                  disabled={shouldDisableCells}
-                > {flagSign} </button>;
-            }
-            else{
-                cellBtn = <button className="cellNotRevealed"
-                                  disabled={shouldDisableCells}
-                    onContextMenu={e =>onCellClick(e,row, col )}
-                    onClick={e =>{onCellClick(e, row,col)}}
-                />;
-            }
+            cellBtn = <button className="cellNotRevealed"
+                              onContextMenu={e =>onCellClick(e,row, col )}
+                              onClick={e =>{onCellClick(e, row,col)}}
+            />;
         }
-
-        return cellBtn;
     }
-}
 
-export default Cell;
+    return cellBtn;
+};
