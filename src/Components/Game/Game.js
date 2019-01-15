@@ -12,15 +12,20 @@ class Game extends Component {
         this.state = {
             height: 5,
             width: 4,
-            minesNum: 5,
+            minesNum: 4,
             gameStatus: gameStatus.inProgress
         };
 
         this.updateGameStatus = this.updateGameStatus.bind(this);
+        this.changeGameSettings = this.changeGameSettings.bind(this);
     }
 
     updateGameStatus(gameStatus){
         this.setState({gameStatus});
+    }
+
+    changeGameSettings( height = 3, width = 3, minesNum= 3){
+        this.setState({height, width, minesNum})
     }
 
     render() {
@@ -31,7 +36,7 @@ class Game extends Component {
         const styleDiv = [style.game, {position:'relative'}];
         return (
             <div style={styleDiv} className="game">
-            <Header gameStatus={this.state.gameStatus}/>
+            <Header onChange={this.changeGameSettings}/>
             {isClickable? null : <GameOverPanel gameStatus={this.state.gameStatus} /> }
             <Board changeGameStatus={this.updateGameStatus}
                    height={height}

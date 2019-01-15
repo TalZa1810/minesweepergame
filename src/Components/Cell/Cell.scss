@@ -1,13 +1,13 @@
-button {
+.cellRevealed{
+  background: aqua;
   height: 30px;
   width: 30px;
   margin: 2px;
 }
 
-.cellRevealed{
-  background: aqua;
-}
-
 .cellNotRevealed{
   background: azure;
+  height: 30px;
+  width: 30px;
+  margin: 2px;
 }

@@ -1,6 +1,6 @@
 import {gameStatus, mineSign} from "./Constants";
 
-const minesIndArr = [];
+let minesIndArr = [];
 
 export function createBoard(height, width, minesNum ){
     const board= [];
@@ -20,6 +20,7 @@ export function createBoard(height, width, minesNum ){
 }
 
 function placeMines(minesNum, board){
+    minesIndArr = [];
     const height = board.length;
     const width = board[0].length;
 
@@ -47,6 +48,7 @@ function placeNumbers(board){
 }
 
 function placeVerticalNumbers(row, col, board){
+    debugger;
     const firstRow = row === 0;
     const lastRow = row === board.length - 1;
 

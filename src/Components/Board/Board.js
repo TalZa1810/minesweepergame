@@ -15,21 +15,23 @@ class Board extends React.Component {
         this.onCellClick = this.onCellClick.bind(this);
     }
 
-    componentDidUpdate(){
-        debugger;
-        this.checkWinning();
+    componentDidUpdate(prevProps){
+        if(prevProps.height !== this.props.height || prevProps.width !== this.props.width){
+            this.createNewBoard();
+        }
     }
 
     componentDidMount() {
-        const height = this.props.height;
-        const width = this.props.width;
-        const minesNum = this.props.minesNum;
+        this.createNewBoard();
+    }
+
+    createNewBoard(){
+        const {height, width, minesNum} = this.props;
         const board = BoardUtils.createBoard(height, width, minesNum);
         this.setState({board});
     }
 
     checkWinning(){
-        debugger;
         const rowNum= this.props.height;
         const colNum = this.props.width;
         const boardSize= rowNum * colNum;
@@ -87,7 +89,7 @@ class Board extends React.Component {
             this.revealCell(rowInd + 1, colInd + 1, board);
         }
 
-        //TODO: check winning
+        this.checkWinning();
     }
 
     render(){
