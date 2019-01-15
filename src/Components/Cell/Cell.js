@@ -1,6 +1,6 @@
 import React from 'react';
 import './Cell.scss';
-import { flagSign } from '../../Utils/Constants';
+import { cellStatus, flagSign } from '../../Utils/Constants';
 
 
 export const Cell = props =>{
@@ -8,24 +8,21 @@ export const Cell = props =>{
     const { cell, row, col , onCellClick } = props;
     let cellBtn;
 
-    if(cell.isRevealed && !cell.isFlag){
-        cellBtn = <button className="cellRevealed">
-            {cell.value}
-        </button>;
+    if(cell.status === cellStatus.flagged){
+        cellBtn = <button className="cellFlagged"> {flagSign} </button>;
     }
     else{
-        if(cell.isFlag){
-            cellBtn = <button className="cellFlagged"
-
-            > {flagSign} </button>;
+        if(cell.status === cellStatus.revealed){
+            cellBtn = <button className="cellRevealed">{cell.value} </button>;
         }
         else{
             cellBtn = <button className="cellNotRevealed"
-                              onContextMenu={e =>onCellClick(e,row, col )}
                               onClick={e =>{onCellClick(e, row,col)}}
+                              onContextMenu={e => onCellClick(e,row, col)}
             />;
         }
     }
+
 
     return cellBtn;
 };

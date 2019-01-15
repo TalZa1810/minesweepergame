@@ -1,4 +1,4 @@
-import {gameStatus, mineSign} from "./Constants";
+import {cellStatus, gameStatus, mineSign} from "./Constants";
 
 let minesIndArr = [];
 
@@ -8,7 +8,7 @@ export function createBoard(height, width, minesNum ){
     for(let rowInd= 0; rowInd < height; rowInd++){
         const row = [];
         for ( let colInd= 0; colInd < width; colInd++){
-            row.push({isRevealed:false ,value: 0, isFlag: false});
+            row.push({value: 0, status: cellStatus.notRevealed});
         }
         board.push(row);
     }
@@ -16,7 +16,6 @@ export function createBoard(height, width, minesNum ){
     placeMines(minesNum, board);
     placeNumbers(board);
     return board;
-
 }
 
 function placeMines(minesNum, board){

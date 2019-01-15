@@ -6,3 +6,9 @@ export const gameStatus = {
   win: "win"
 };
 export const flagSign = "🚩";
+
+export const cellStatus = {
+  flagged: 'flagged',
+  revealed: 'revealed',
+  notRevealed: 'notRevealed'
+};

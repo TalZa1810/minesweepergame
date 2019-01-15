@@ -2,7 +2,7 @@ import React from 'react';
 import style from './Board.scss';
 import { Cell } from "../Cell/Cell";
 import PropTypes from 'prop-types';
-import { mineSign, gameStatus } from '../../Utils/Constants';
+import { cellStatus ,mineSign, gameStatus } from '../../Utils/Constants';
 import  _ from 'lodash';
 import * as BoardUtils from '../../Utils/BoardUtils'
 
@@ -29,12 +29,12 @@ class Board extends React.Component {
 
     componentDidMount() {
         this.createNewBoard();
-
     }
 
     createNewBoard(){
         const {height, width, minesNum} = this.props;
         const board = BoardUtils.createBoard(height, width, minesNum);
+        this.revealedCounter = 0;
         this.setState({board});
     }
 
@@ -50,13 +50,14 @@ class Board extends React.Component {
     }
 
     onCellClick(e, rowInd, colInd){
-        const board = _.clone(this.state.board);
+        const board = _.cloneDeep(this.state.board);
         this.props.changeGameStatus(gameStatus.inProgress);
+        //TODO: allowing removing flag
 
         if(e.type === 'contextmenu'){
             e.preventDefault();
             const cell = board[rowInd][colInd];
-            cell.isFlag = true;
+            cell.status = cellStatus.flagged;
         }
         else{
             this.revealCell(rowInd, colInd, board);
@@ -73,11 +74,11 @@ class Board extends React.Component {
 
         const cell = board[rowInd][colInd];
 
-        if (cell.isRevealed) {
+        if(cell.status !== cellStatus.notRevealed ){
             return;
         }
 
-        cell.isRevealed = true;
+        cell.status = cellStatus.revealed;
         this.revealedCounter++;
 
         if (cell.value === mineSign) {
@@ -103,21 +104,11 @@ class Board extends React.Component {
         const board = this.state.board;
 
         return (<div style={style.board} id="board">
-            {
-                board.map((row, rowInd) =>{
-                    return <div className={style.row} key={rowInd}>
-                        {row.map((cell, colInd) =>{
-                            return <Cell
-                                key={colInd}
-                                cell={cell}
-                                row={rowInd}
-                                col={colInd}
-                                onCellClick={this.onCellClick}
-                            />
-                        })}
-                    </div>
-                })
-            }
+            {board.map((row, rowInd) =>
+                <div className={style.row} key={rowInd}>
+                    {row.map((cell, colInd) => <Cell key={colInd} cell={cell} row={rowInd} col={colInd}
+                                                     onCellClick={this.onCellClick}/>)}
+                </div>)}
         </div>)
     }
 }
