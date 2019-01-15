@@ -15,7 +15,7 @@ export const Cell = props =>{
     }
     else{
         if(cell.isFlag){
-            cellBtn = <button className="cellFlaged"
+            cellBtn = <button className="cellFlagged"
 
             > {flagSign} </button>;
         }

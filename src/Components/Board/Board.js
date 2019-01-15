@@ -15,14 +15,21 @@ class Board extends React.Component {
         this.onCellClick = this.onCellClick.bind(this);
     }
 
-    componentDidUpdate(prevProps){
-        if(prevProps.height !== this.props.height || prevProps.width !== this.props.width){
+    componentDidUpdate(prevProps, prevState, snapshot){
+        const heightChange= prevProps.height !== this.props.height;
+        const widthChange = prevProps.width !== this.props.width;
+        const gameRestarted = prevProps.gameStatus === gameStatus.inProgress && this.props.gameStatus === gameStatus.start;
+        const playerWon = prevProps.gameStatus === gameStatus.win &&  this.props.gameStatus === gameStatus.start;
+        const playerLost = prevProps.gameStatus === gameStatus.lose &&  this.props.gameStatus === gameStatus.start;
+
+        if( heightChange || widthChange || gameRestarted || playerWon || playerLost){
             this.createNewBoard();
         }
     }
 
     componentDidMount() {
         this.createNewBoard();
+
     }
 
     createNewBoard(){
@@ -38,13 +45,13 @@ class Board extends React.Component {
         const minesNum = this.props.minesNum;
         const isWinner = boardSize - minesNum === this.revealedCounter;
         if(isWinner){
-            this.gameStatus = gameStatus.win;
             this.props.changeGameStatus(gameStatus.win);
         }
     }
 
     onCellClick(e, rowInd, colInd){
         const board = _.clone(this.state.board);
+        this.props.changeGameStatus(gameStatus.inProgress);
 
         if(e.type === 'contextmenu'){
             e.preventDefault();

@@ -48,7 +48,6 @@ function placeNumbers(board){
 }
 
 function placeVerticalNumbers(row, col, board){
-    debugger;
     const firstRow = row === 0;
     const lastRow = row === board.length - 1;
 

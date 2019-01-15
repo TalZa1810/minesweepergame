@@ -13,7 +13,7 @@ class Game extends Component {
             height: 5,
             width: 4,
             minesNum: 4,
-            gameStatus: gameStatus.inProgress
+            gameStatus: gameStatus.start
         };
 
         this.updateGameStatus = this.updateGameStatus.bind(this);
@@ -24,24 +24,29 @@ class Game extends Component {
         this.setState({gameStatus});
     }
 
-    changeGameSettings( height = 3, width = 3, minesNum= 3){
+    changeGameSettings( height = 5, width = 4, minesNum= 4){
         this.setState({height, width, minesNum})
     }
 
     render() {
-        const isClickable = this.state.gameStatus === gameStatus.inProgress;
+        const isClickable = this.state.gameStatus === gameStatus.start ||
+                            this.state.gameStatus === gameStatus.inProgress;
+
         const { height, width, minesNum } = this.state;
 
         //TODO: fix styling
         const styleDiv = [style.game, {position:'relative'}];
         return (
             <div style={styleDiv} className="game">
-            <Header onChange={this.changeGameSettings}/>
+            <Header onChangeSettings={this.changeGameSettings}
+                    changeGameStatus={this.updateGameStatus}
+            />
             {isClickable? null : <GameOverPanel gameStatus={this.state.gameStatus} /> }
             <Board changeGameStatus={this.updateGameStatus}
                    height={height}
                    width={width}
                    minesNum={minesNum}
+                   gameStatus={this.state.gameStatus}
             />
         </div>
     );
