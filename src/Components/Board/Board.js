@@ -50,7 +50,6 @@ class Board extends React.Component {
     }
 
     onCellClick(e, rowInd, colInd){
-
         this.props.changeGameStatus(gameStatus.inProgress);
         const board = cloneDeep(this.state.board);
         e.preventDefault();
@@ -76,9 +75,7 @@ class Board extends React.Component {
         }
     }
 
-
     revealCell(rowInd, colInd, board){
-
         if(rowInd === -1 || colInd === -1 || rowInd === board.length || colInd === board[0].length){
             return;
         }
@@ -113,9 +110,8 @@ class Board extends React.Component {
 
     render(){
         const board = this.state.board;
-        console.dir(board);
 
-        return (<div style={style.board} id="board">
+        return (<div>
             {board.map((row, rowInd) =>
                 <div className={style.row} key={rowInd}>
                     {row.map((cell, colInd) => <Cell key={colInd} cell={cell} row={rowInd} col={colInd}

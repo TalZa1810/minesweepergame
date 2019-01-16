@@ -4,6 +4,7 @@ import style from './Game.scss';
 import Header from '../Header/Header';
 import { gameStatus } from '../../Utils/Constants';
 import { GameOverPanel }   from '../GameOverPanel/GameOverPanel';
+import PropTypes from 'prop-types';
 
 class Game extends Component {
 
@@ -50,5 +51,13 @@ class Game extends Component {
     );
    }
 }
+
+Game.propTypes = {
+    height: PropTypes.number,
+    width: PropTypes.number,
+    minesNum: PropTypes.number,
+    gameStatus: PropTypes.string
+
+};
 
 export default Game;
