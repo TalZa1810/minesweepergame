@@ -3,7 +3,7 @@ import style from './Board.scss';
 import { Cell } from "../Cell/Cell";
 import PropTypes from 'prop-types';
 import { cellStatus ,mineSign , gameStatus } from '../../Utils/Constants';
-import { cloneDeep, debounce } from 'lodash';
+import { cloneDeep } from 'lodash';
 import {  createBoard } from '../../Utils/BoardUtils'
 
 class Board extends React.Component {
@@ -13,7 +13,6 @@ class Board extends React.Component {
         this.revealedCounter = 0;
         this.state = { board: [] };
         this.onCellClick = this.onCellClick.bind(this);
-        this.flagCell = this.flagCell.bind(this);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot){
@@ -69,7 +68,7 @@ class Board extends React.Component {
 
     flagCell(rowInd, colInd, board){
         const cell = board[rowInd][colInd];
-        if(cell.status !== cellStatus.flagged){
+        if(cell.status === cellStatus.notRevealed){
             cell.status = cellStatus.flagged;
         }
         else{
@@ -114,6 +113,7 @@ class Board extends React.Component {
 
     render(){
         const board = this.state.board;
+        console.dir(board);
 
         return (<div style={style.board} id="board">
             {board.map((row, rowInd) =>
