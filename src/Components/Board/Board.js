@@ -2,9 +2,9 @@ import React from 'react';
 import style from './Board.scss';
 import { Cell } from "../Cell/Cell";
 import PropTypes from 'prop-types';
-import { cellStatus ,mineSign, gameStatus } from '../../Utils/Constants';
-import  _ from 'lodash';
-import * as BoardUtils from '../../Utils/BoardUtils'
+import { cellStatus ,mineSign , gameStatus } from '../../Utils/Constants';
+import { cloneDeep, debounce } from 'lodash';
+import {  createBoard } from '../../Utils/BoardUtils'
 
 class Board extends React.Component {
 
@@ -13,6 +13,7 @@ class Board extends React.Component {
         this.revealedCounter = 0;
         this.state = { board: [] };
         this.onCellClick = this.onCellClick.bind(this);
+        this.flagCell = this.flagCell.bind(this);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot){
@@ -33,7 +34,7 @@ class Board extends React.Component {
 
     createNewBoard(){
         const {height, width, minesNum} = this.props;
-        const board = BoardUtils.createBoard(height, width, minesNum);
+        const board = createBoard(height, width, minesNum);
         this.revealedCounter = 0;
         this.setState({board});
     }
@@ -50,14 +51,13 @@ class Board extends React.Component {
     }
 
     onCellClick(e, rowInd, colInd){
-        const board = _.cloneDeep(this.state.board);
+
         this.props.changeGameStatus(gameStatus.inProgress);
-        //TODO: allowing removing flag
+        const board = cloneDeep(this.state.board);
+        e.preventDefault();
 
         if(e.type === 'contextmenu'){
-            e.preventDefault();
-            const cell = board[rowInd][colInd];
-            cell.status = cellStatus.flagged;
+            this.flagCell(rowInd, colInd, board);
         }
         else{
             this.revealCell(rowInd, colInd, board);
@@ -65,6 +65,18 @@ class Board extends React.Component {
 
         this.setState({board});
     }
+
+
+    flagCell(rowInd, colInd, board){
+        const cell = board[rowInd][colInd];
+        if(cell.status !== cellStatus.flagged){
+            cell.status = cellStatus.flagged;
+        }
+        else{
+            cell.status = cellStatus.notRevealed;
+        }
+    }
+
 
     revealCell(rowInd, colInd, board){
 
@@ -107,7 +119,8 @@ class Board extends React.Component {
             {board.map((row, rowInd) =>
                 <div className={style.row} key={rowInd}>
                     {row.map((cell, colInd) => <Cell key={colInd} cell={cell} row={rowInd} col={colInd}
-                                                     onCellClick={this.onCellClick}/>)}
+                                                     onCellClick={this.onCellClick}
+                    />)}
                 </div>)}
         </div>)
     }

@@ -103,7 +103,6 @@ function getRandomMineIndex(max) {
     return Math.floor(Math.random() * Math.floor(max));
 }
 
-
 export function displayMessage (status){
     let message;
 
