@@ -37,7 +37,7 @@ export const Header = props => {
                 <input type='number'
                        defaultValue={4} ref={el => minesNum = el }
                        min="4" max="10"  />
-                <button className="newGame" style={style.newGame}> New Game </button>
+                <button className={style.newGame}> New Game </button>
             </form>
         </div>
 };

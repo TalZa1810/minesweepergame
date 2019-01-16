@@ -34,10 +34,8 @@ class Game extends Component {
 
         const { height, width, minesNum } = this.state;
 
-        //TODO: fix styling
-        const styleDiv = [style.game, {position:'relative'}];
         return (
-            <div style={styleDiv} className="game">
+            <div className={style.game}>
             <Header onChangeSettings={this.changeGameSettings}
                     changeGameStatus={this.updateGameStatus}
             />

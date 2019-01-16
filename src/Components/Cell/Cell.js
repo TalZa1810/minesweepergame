@@ -1,5 +1,5 @@
 import React from 'react';
-import './Cell.scss';
+import style from './Cell.scss';
 import { cellStatus, flagSign } from '../../Utils/Constants';
 
 
@@ -9,14 +9,14 @@ export const Cell = props =>{
     let cellBtn;
 
     if(cell.status === cellStatus.flagged){
-        cellBtn = <button className="cellFlagged" onContextMenu={e => onCellClick(e, row, col)}> {flagSign} </button>;
+        cellBtn = <button className={style.cellFlagged} onContextMenu={e => onCellClick(e, row, col)}> {flagSign} </button>;
     }
     else{
         if(cell.status === cellStatus.revealed){
-            cellBtn = <button className="cellRevealed">{cell.value} </button>;
+            cellBtn = <button className={style.cellRevealed}>{cell.value} </button>;
         }
         else{
-            cellBtn = <button className="cellNotRevealed"
+            cellBtn = <button className={style.cellNotRevealed}
                               onClick={e =>{onCellClick(e, row,col)}}
                               onContextMenu={e => onCellClick(e, row, col)}
                        />;

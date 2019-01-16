@@ -1,18 +1,18 @@
-.cellRevealed{
+:local(.cellRevealed){
   background: aqua;
   height: 30px;
   width: 30px;
   margin: 2px;
 }
 
-.cellNotRevealed{
+:local(.cellNotRevealed){
   background: azure;
   height: 30px;
   width: 30px;
   margin: 2px;
 }
 
-.cellFlagged{
+:local(.cellFlagged){
   height: 30px;
   width: 30px;
   margin: 2px;
