@@ -23,23 +23,23 @@ export const Header = props => {
     };
 
      return <div>
-            <p>Minesweeper</p>
-            <form onSubmit={handleSubmit}>
-                <label>Height:</label>
-                <input type='number'
-                       defaultValue={5} ref={el => height = el }
-                       min="5" max="10" />
-                <label>Width:</label>
-                <input type='number'
-                       defaultValue={4} ref={el => width = el }
-                       min="4" max="10" />
-                <label>Mines:</label>
-                <input type='number'
-                       defaultValue={4} ref={el => minesNum = el }
-                       min="4" max="10"  />
-                <button className={style.newGame}> New Game </button>
-            </form>
-        </div>
+                <h1>Minesweeper</h1>
+                <form onSubmit={handleSubmit}>
+                    <label>Height:</label>
+                    <input type='number'
+                           defaultValue={5} ref={ el => height = el }
+                           min="5" max="10" />
+                    <label>Width:</label>
+                    <input type='number'
+                           defaultValue={4} ref={ el => width = el }
+                           min="4" max="10" />
+                    <label>Mines:</label>
+                    <input type='number'
+                           defaultValue={4} ref={ el => minesNum = el }
+                           min="4" max="10"  />
+                    <button className={style.newGame}> New Game </button>
+                </form>
+             </div>
 };
 
 export default Header;

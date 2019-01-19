@@ -30,25 +30,23 @@ class Game extends Component {
     }
 
     render() {
-        const isClickable = this.state.gameStatus === gameStatus.start ||
-                            this.state.gameStatus === gameStatus.inProgress;
+        const isGameDone = this.state.gameStatus === gameStatus.start ||
+                           this.state.gameStatus === gameStatus.inProgress;
 
         const { height, width, minesNum } = this.state;
 
-        return (
-            <div className={style.game}>
-            <Header onChangeSettings={this.changeGameSettings}
-                    changeGameStatus={this.updateGameStatus}
-            />
-            {isClickable? null : <GameOverPanel gameStatus={this.state.gameStatus} /> }
-            <Board changeGameStatus={this.updateGameStatus}
-                   height={height}
-                   width={width}
-                   minesNum={minesNum}
-                   gameStatus={this.state.gameStatus}
-            />
-        </div>
-    );
+        return <div className={style.game}>
+                    <Header onChangeSettings={this.changeGameSettings}
+                            changeGameStatus={this.updateGameStatus}
+                    />
+                <Board changeGameStatus={this.updateGameStatus}
+                           height={height}
+                           width={width}
+                           minesNum={minesNum}
+                           gameStatus={this.state.gameStatus}
+                    />
+            {isGameDone? null : <GameOverPanel gameStatus={this.state.gameStatus} />}
+            </div>
    }
 }
 
@@ -57,7 +55,6 @@ Game.propTypes = {
     width: PropTypes.number,
     minesNum: PropTypes.number,
     gameStatus: PropTypes.string
-
 };
 
 export default Game;

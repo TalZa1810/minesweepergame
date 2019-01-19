@@ -11,11 +11,16 @@ class Board extends React.Component {
     constructor(props){
         super(props);
         this.revealedCounter = 0;
-        this.state = { board: [] };
+        this.isGameDone = false;
+        this.state = { board: [] , size: 0};
         this.onCellClick = this.onCellClick.bind(this);
     }
 
     componentDidUpdate(prevProps, prevState, snapshot){
+        this.renderingNewBoardChecking(prevProps);
+    }
+
+    renderingNewBoardChecking(prevProps){
         const heightChange= prevProps.height !== this.props.height;
         const widthChange = prevProps.width !== this.props.width;
         const gameRestarted = prevProps.gameStatus === gameStatus.inProgress && this.props.gameStatus === gameStatus.start;
@@ -35,6 +40,7 @@ class Board extends React.Component {
         const {height, width, minesNum} = this.props;
         const board = createBoard(height, width, minesNum);
         this.revealedCounter = 0;
+        this.isGameDone = false;
         this.setState({board});
     }
 
@@ -46,6 +52,7 @@ class Board extends React.Component {
         const isWinner = boardSize - minesNum === this.revealedCounter;
         if(isWinner){
             this.props.changeGameStatus(gameStatus.win);
+            this.isGameDone = true;
         }
     }
 
@@ -63,7 +70,6 @@ class Board extends React.Component {
 
         this.setState({board});
     }
-
 
     flagCell(rowInd, colInd, board){
         const cell = board[rowInd][colInd];
@@ -91,6 +97,7 @@ class Board extends React.Component {
 
         if (cell.value === mineSign) {
             this.props.changeGameStatus(gameStatus.lose);
+            this.isGameDone = true;
             return;
         }
 
@@ -109,16 +116,18 @@ class Board extends React.Component {
     }
 
     render(){
-        const board = this.state.board;
+        const { board }= this.state;
 
-        return (<div>
+
+        return <div>
             {board.map((row, rowInd) =>
                 <div className={style.row} key={rowInd}>
                     {row.map((cell, colInd) => <Cell key={colInd} cell={cell} row={rowInd} col={colInd}
                                                      onCellClick={this.onCellClick}
+                                                     isGameDone={this.isGameDone}
                     />)}
                 </div>)}
-        </div>)
+               </div>
     }
 }
 

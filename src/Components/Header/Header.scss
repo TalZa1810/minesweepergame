@@ -1,8 +1,13 @@
 input{
   width: 50px;
-  margin: 3px;
+  margin: 4px;
+}
+label{
+  margin: 4px;
 }
 
 :local(.newGame){
   width: 80px;
+  height: 20px;
+  margin: 3px;
 }
