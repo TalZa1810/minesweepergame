@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { gameStatus } from '../../Utils/Constants';
 import Settings from '../Settings/Settings';
-import Board from "../Board/Board";
-import Board2 from "../Board/Board2";
+import { BoardProxy } from "../Board/Board2";
 
 const GameContext = React.createContext({});
 
@@ -32,18 +31,13 @@ class Game2 extends Component{
         };
     }
 
-    componentDidUpdate(prevProps){
-        debugger;
-        console.log(prevProps);
-    }
-
     render(){
         return (<GameProvider value={this.state}>
             <Settings/>
-            <Board2 board={this.state.board}/>
-
+            {this.state.gameSettings && <BoardProxy settings={this.state.gameSettings}/>}
         </GameProvider>);
     }
 }
 
 export default Game2;
+

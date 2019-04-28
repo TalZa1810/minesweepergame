@@ -1,59 +1,83 @@
 import React , { Component } from 'react';
-import { cellStatus } from '../../Utils/Constants';
-import BoardContext, { BoardConsumer } from '../Board/Board2';
+import { BoardConsumer } from '../Board/Board2';
+import { GameConsumer } from '../Game/Game2';
+import {cellStatus, flagSign, mineSign, gameStatus} from '../../Utils/Constants';
+import styles from './Cell.scss';
+import classNames from 'classnames';
 
 
 class Cell2 extends Component{
 
     constructor(props){
         super(props);
-        this.state= { status: cellStatus.notRevealed, value: props.value }
+        this.state= { status: cellStatus.notRevealed, value: props.value, sign: ''};
     }
 
-    revealCurrentCell(){
+    onCellClick(e, p , gameContext){
+        e.preventDefault();
 
+        let { status , value } = this.state;
+        if( status === cellStatus.notRevealed){
+            if( e.type === 'contextmenu' ){
+                status = cellStatus.flagged;
+            }
+            else{
+                status = cellStatus.revealed;
+                p();
+                if( value ===  mineSign ){
+                    gameContext.updateGameStatus(gameStatus.lose);
+                }
+            }
+
+            this.setState({ status });
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState){
+        let sign = '';
+        if( prevState.status !== this.state.status){
+            if( this.state.status === cellStatus.flagged ){
+                sign = flagSign;
+            }
+            if(this.state.status === cellStatus.revealed ){
+                sign = this.state.value;
+            }
+            this.setState({ sign });
+        }
     }
 
     render(){
-        return(<BoardConsumer>
-            { revealCell => {
-                return <button onClick={revealCell}/>
-            } }
-        </BoardConsumer>)
+
+        const buttonStyle = classNames({
+            [styles.cellFlagged]: this.state.status ===  cellStatus.flagged,
+            [styles.cellRevealed]:this.state.status ===  cellStatus.revealed,
+            [styles.cellNotRevealed]: this.state.status ===  cellStatus.notRevealed,
+        });
+
+        return(<GameConsumer>
+            {
+                gameContext => {
+                    const disabled = gameContext.gameStatus === gameStatus.lose ||
+                        gameContext.gameStatus === gameStatus.win;
+
+                    return <BoardConsumer>
+                        { boardContext => {
+                            const p = boardContext.revealCell;
+                            return <button
+                                className={buttonStyle}
+                                disabled={disabled}
+                                onClick={e => this.onCellClick(e,p, gameContext)}
+                                onContextMenu={(e) => this.onCellClick(e)}
+                            >
+                                {this.state.sign}
+                            </button>
+                        }}
+                    </BoardConsumer>
+                }
+            }
+            </GameConsumer>);
     }
 }
 
-Cell2.contextType = BoardContext;
-
 export default Cell2;
-
-/*
-
-
-    let cellBtn;
-
-
-
-    if(cell.status === cellStatus.flagged){
-        cellBtn = <button className={style.cellFlagged}
-
-                          onContextMenu={e => onCellClick(e, row, col)}> {flagSign} </button>;
-    }
-    else{
-        if(cell.status === cellStatus.revealed){
-            cellBtn = <button
-                              className={style.cellRevealed}>{cell.value} </button>;
-        }
-        else{
-            cellBtn = <button className={style.cellNotRevealed}
-                              onClick={e =>{onCellClick(e, row,col)}}
-                              onContextMenu={e => onCellClick(e, row, col)}
-
-            />;
-        }
-    }
-
-    return cellBtn;
-
-*/
 

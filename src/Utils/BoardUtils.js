@@ -1,14 +1,14 @@
-import {cellStatus, gameStatus, mineSign} from "./Constants";
+import {gameStatus, mineSign} from "./Constants";
 
 let minesIndArr = [];
 
-export function createBoard(height, width, minesNum ){
+export function createBoard({ height = 4, width = 5, minesNum = 5 } ){
     const board= [];
 
     for(let rowInd= 0; rowInd < height; rowInd++){
         const row = [];
         for ( let colInd= 0; colInd < width; colInd++){
-            row.push({value: 0, status: cellStatus.notRevealed});
+            row.push({value: 0 });
         }
         board.push(row);
     }
